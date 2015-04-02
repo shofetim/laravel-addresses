@@ -4,7 +4,7 @@ class Address extends \Eloquent {
 
 	protected $table = 'addresses';
 	public $timestamps = false;
-	protected $fillable = array('addressee', 'organization', 'street', 'street_extra', 'city', 'state', 'zip', 'country', 'phone');
+	protected $fillable = array('addressee', 'organization', 'street', 'street_extra', 'city', 'state', 'zip', 'country', 'phone', 'is_shipping', 'is_billing');
 	protected $guarded = array('id', 'state_a2', 'country_a2', 'state_name', 'country_name', 'user_id');
 	protected $appends = array('state', 'country');
 
