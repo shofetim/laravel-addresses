@@ -4,8 +4,12 @@ class Address extends \Eloquent {
 
 	protected $table = 'addresses';
 	public $timestamps = false;
-	protected $fillable = array('addressee', 'organization', 'street', 'street_extra', 'city', 'state', 'zip', 'country', 'phone', 'is_shipping', 'is_billing');
-	protected $guarded = array('id', 'state_a2', 'country_a2', 'state_name', 'country_name', 'user_id');
+	protected $fillable = array(
+        'addressee', 'organization', 'street', 'street_extra', 'city',
+        'state', 'zip', 'country', 'phone', 'is_shipping', 'is_billing');
+	protected $guarded = array(
+        'id', 'state_a2', 'country_a2', 'state_name', 'country_name',
+        'user_id');
 	protected $appends = array('state', 'country');
 
 	public static function boot() {
@@ -24,7 +28,8 @@ class Address extends \Eloquent {
 			'street'=>'required|Max:100',
 			'city'=>'required',
 			'state_a2'=>'required|Alpha|size:2',
-			'zip'=>'required|AlphaDash|Min:5|Max:10', // https://www.barnesandnoble.com/help/cds2.asp?PID=8134
+            // https://www.barnesandnoble.com/help/cds2.asp?PID=8134
+			'zip'=>'required|AlphaDash|Min:5|Max:10',
 		);
 		
 		if(\Config::get('addresses::show_country')) {
