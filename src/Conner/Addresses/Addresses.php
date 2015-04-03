@@ -92,15 +92,36 @@ class Addresses {
 	 * @return Illuminate\Validation\Validator ready to test for fails|passes
 	 */
 	function getValidator($input = null) {
-		$rules = Address::rules();
-		
-		if(is_null($input)) {
+        $rules = Address::rules();
+
+		if (is_null($input)) {
 			$input = \Input::all();
 		}
-		
+
 		$address = new Address($input);
-		
-		return \Validator::make($address->toArray(), $rules);
+
+        $messages = array(
+            'is_billing.accepted'=>
+            'If this is a Billing Address please select the "Set as Billing Address" all address must be set as a Billing Address, Shipping Address, or both',
+            'is_shipping.accepted'=>
+            'If this is a Shipping Address please select the "Set as Shipping Address" all address must be set as a Billing Address, Shipping Address, or both',
+        );
+
+		$v = \Validator::make($address->toArray(), $rules, $messages);
+        $v->sometimes(
+            'is_billing',
+            'required|accepted',
+            function($input) {
+                return $input->is_shipping == "0";
+            });
+        $v->sometimes(
+            'is_shipping',
+            'required|accepted',
+            function($input) {
+                return $input->is_billing == "0";
+            });
+
+        return $v;
 	}
 	
 	/**
