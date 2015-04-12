@@ -123,7 +123,21 @@ class Addresses {
 
         return $v;
 	}
-	
+
+    public function getFilteredList($type) {
+        $userId = self::userId(false);
+        $builder = Address::where('user_id', $userId);
+        $builder->where($type, true);
+        $builder->orderBy('id', 'ASC');
+        $list = array();
+        if ($addresses = $builder->get()) {
+            foreach($addresses as $address) {
+                $list[$address->id] = $address->display;
+            }
+        }
+        return $list;
+    }
+
 	/**
 	 * Return Collection of Addresses owned by the given userID.
 	 *
